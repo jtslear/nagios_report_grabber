@@ -2,18 +2,23 @@
 
 scriptName=$0
 date=`date +%Y%m%d`
-sourceDir=/opt/data
+sourceDir=~/
+
+source .nagios_report_grabber.env
+echo $NAGIOS_USERNAME
+echo $NAGIOS_PASSWORD
+echo $NAGIOS_SERVER
 
 cd $sourceDir
 
 #Availability Report
-`wget -O $sourceDir/availability$date.html --user=splat--password="local" "http://monitor1/nagios/cgi-bin/avail.cgi?show_log_entries=&hostgroup=prod-env&timeperiod=last7days&smon=5&sday=1&syear=2012&shour=0&smin=0&ssec=0&emon=5&eday=29&eyear=2012&ehour=24&emin=0&esec=0&rpttimeperiod=&assumeinitialstates=yes&assumestateretention=yes&assumestatesduringnotrunning=yes&includesoftstates=no&initialassumedhoststate=0&initialassumedservicestate=0&backtrack=4"`
+`wget -O $sourceDir/availability$date.html --user=$NAGIOS_USERNAME --password=$NAGIOS_PASSWORD "http://$NAGIOS_SERVER/nagios/cgi-bin/avail.cgi?show_log_entries=&hostgroup=prod-env&timeperiod=last7days&smon=5&sday=1&syear=2012&shour=0&smin=0&ssec=0&emon=5&eday=29&eyear=2012&ehour=24&emin=0&esec=0&rpttimeperiod=&assumeinitialstates=yes&assumestateretention=yes&assumestatesduringnotrunning=yes&includesoftstates=no&initialassumedhoststate=0&initialassumedservicestate=0&backtrack=4"`
 
 `htmldoc -t pdf14 --webpage -f $sourceDir/availability$date.pdf $sourceDir/availability$date.html`
 
 
 #Top Alerters
-`wget -O $sourceDir/topAlerters$date.html --user=splat--password="local" "http://monitor1/nagios/cgi-bin/summary.cgi?report=1&displaytype=3&timeperiod=last7days&smon=5&sday=1&syear=2012&shour=0&smin=0&ssec=0&emon=5&eday=29&eyear=2012&ehour=24&emin=0&esec=0&hostgroup=all&servicegroup=all&host=all&alerttypes=3&statetypes=2&hoststates=7&servicestates=120&limit=100"`
+`wget -O $sourceDir/topAlerters$date.html --user=$NAGIOS_USERNAME --password=$NAGIOS_PASSWORD "http://$NAGIOS_SERVER/nagios/cgi-bin/summary.cgi?report=1&displaytype=3&timeperiod=last7days&smon=5&sday=1&syear=2012&shour=0&smin=0&ssec=0&emon=5&eday=29&eyear=2012&ehour=24&emin=0&esec=0&hostgroup=all&servicegroup=all&host=all&alerttypes=3&statetypes=2&hoststates=7&servicestates=120&limit=100"`
 
 `htmldoc -t pdf14 --webpage -f $sourceDir/topAlerters$date.pdf $sourceDir/topAlerters$date.html`
 
